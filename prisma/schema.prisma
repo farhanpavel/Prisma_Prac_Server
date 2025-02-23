@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String     @id @default(uuid())
+  name     String
+  email    String
+  movie    Movie[]
+  bevarage Bevarage[]
+}
+
+model Movie {
+  id     String @id @default(uuid())
+  userId String
+  name   String
+  price  Int
+  User   User   @relation(fields: [userId], references: [id])
+}
+
+model Bevarage {
+  id     String @id @default(uuid())
+  name   String
+  price  Int
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+// model User {
+//   id           String         @id @default(uuid())
+//   name         String
+//   email        String
+//   role         String
+//   quiz         Quiz[]
+//   ans          Ans[]
+//   result       Result?
+//   assignedquiz AssignedQuiz[] @relation("StudentAssignments") // Student's assigned quizzes
+//   assignedBy   AssignedQuiz[] @relation("TeacherAssignments")
+//   AssignedQuiz AssignedQuiz[]
+//   AssignedQuiz AssignedQuiz[]
+// }
+
+// model AssignedQuiz {
+//   id         String  @id @default(uuid())
+//   user_id    String
+//   quiz_id    String
+//   teacher_id String
+//   User       User    @relation(fields: [user_id], references: [id])
+//   quiz       Quiz    @relation(fields: [quiz_id], references: [id])
+//   Teacher    User    @relation(fields: [teacher_id], references: [id]) // Teacher role
+//   User       User?   @relation(fields: [userId], references: [id])
+//   userId     String?
+//   User       User?   @relation(fields: [userId], references: [id])
+//   userId     String?
+// }
+
+// where you will set the third bracet for example you have use third bracket in
+//user so that means a user can buy multiple tickets and multiple bevarages
+// you can work with user id two times in a same table means if there is a student and teacher in user
+// you can use this student and teacher in a quiz table 
+//example->assignedquiz AssignedQuiz[] @relation("StudentAssignments") // Student's assigned quizzes
+//  assignedBy   AssignedQuiz[] @relation("TeacherAssignments")
